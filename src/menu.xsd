@@ -3,4 +3,40 @@
         targetNamespace="http://www.lozyukartem.com/menu"
         xmlns:tns="http://www.lozyukartem.com/menu"
         elementFormDefault="qualified">
+    <element name="menu">
+        <complexType>
+            <sequence>
+                <element maxOccurs="unbounded" name="salad" type="tns:salad"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="salad">
+        <sequence>
+            <element maxOccurs="unbounded" name="ingredient" type="tns:ingredient"/>
+        </sequence>
+        <attribute use="required" name="name" type="string"/>
+    </complexType>
+
+    <complexType name="ingredient">
+        <sequence>
+            <element name="vegetable" type="tns:vegetable"/>
+            <element name="portion" type="integer"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="vegetable">
+        <restriction base="string">
+            <enumeration value="CARROT"/>
+            <enumeration value="EGGPLANT"/>
+            <enumeration value="CUCUMBER"/>
+            <enumeration value="BEET"/>
+            <enumeration value="CAULIFLOWER"/>
+            <enumeration value="PEPPER"/>
+            <enumeration value="CABBAGE"/>
+            <enumeration value="GARLIC"/>
+            <enumeration value="SORREL"/>
+            <enumeration value="TOMATO"/>
+        </restriction>
+    </simpleType>
 </schema>

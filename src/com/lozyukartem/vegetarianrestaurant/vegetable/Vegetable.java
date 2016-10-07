@@ -9,7 +9,8 @@ public enum Vegetable {
     PEPPER(23, 1.3, 0, 4.7),
     CABBAGE(28, 1.8, 0, 5.4),
     GARLIC(106, 6.5, 0, 21.2),
-    SORREL(19, 0.6, 0, 4.2);
+    SORREL(28, 1.5, 0, 5.3),
+    TOMATO(19, 0.6, 0, 4.2);
 
     private double calories;
     private double proteins;
