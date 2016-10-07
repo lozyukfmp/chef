@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.lozyukartem.com/menu"
+        xmlns:tns="http://www.lozyukartem.com/menu"
+        elementFormDefault="qualified">
+</schema>
