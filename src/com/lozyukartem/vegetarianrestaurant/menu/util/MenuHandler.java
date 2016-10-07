@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class MenuHandler extends DefaultHandler {
 
+    private static final String MENU = "menu";
     private static final String SALAD = "salad";
     private static final String INGREDIENT = "ingredient";
     private static final String PORTION = "portion";
     private static final String VEGETABLE = "vegetable";
 
     private Map<String, Salad> menu = null;
-    private Map<Vegetable, Integer> ingredients = null;
     private int portion;
     private String currentTag = null;
     private Salad salad = null;
@@ -36,16 +36,11 @@ public class MenuHandler extends DefaultHandler {
         switch (localName) {
             case SALAD:
                 salad = new Salad();
-                ingredients = new HashMap<>();
                 salad.setName(attributes.getValue(0));
                 break;
-            case PORTION:
-                currentTag = PORTION;
-                break;
-            case VEGETABLE:
-                currentTag = VEGETABLE;
-                break;
         }
+
+        currentTag = localName;
     }
 
     @Override
@@ -55,19 +50,25 @@ public class MenuHandler extends DefaultHandler {
                 menu.put(salad.getName(), salad);
                 break;
             case INGREDIENT:
-                ingredients.put(vegetable, portion);
+                salad.addIngredient(vegetable, portion);
                 break;
         }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
+        String value = new String(ch, start, length).trim();
+
+        if (value.isEmpty()) {
+            return;
+        }
+
         switch (currentTag) {
             case VEGETABLE:
-                vegetable = Vegetable.valueOf(ch.toString());
+                vegetable = Vegetable.valueOf(value);
                 break;
             case PORTION:
-                portion = Integer.parseInt(ch.toString());
+                portion = Integer.parseInt(value);
                 break;
         }
     }

@@ -2,12 +2,17 @@ package com.lozyukartem.vegetarianrestaurant.salad;
 
 import com.lozyukartem.vegetarianrestaurant.vegetable.Vegetable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Salad {
 
     private Map<Vegetable, Integer> ingredients;
     private String name;
+
+    public Salad() {
+        ingredients = new HashMap<>();
+    }
 
     public Map<Vegetable, Integer> getIngredients() {
         return ingredients;

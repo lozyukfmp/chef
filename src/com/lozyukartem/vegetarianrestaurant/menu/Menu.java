@@ -7,13 +7,11 @@ import java.util.Map;
 
 public final class Menu {
 
-    private static final String menuFilename = "menu.xml";
-
     private static volatile Menu instance = null;
     private Map<String, Salad> salads = null;
 
     private Menu(){
-        salads = MenuUtil.getSalads(menuFilename);
+        salads = MenuUtil.getSalads();
     }
 
     public static Menu getInstance() {
