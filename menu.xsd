@@ -13,16 +13,9 @@
 
     <complexType name="salad">
         <sequence>
-            <element maxOccurs="unbounded" name="ingredient" type="tns:ingredient"/>
+            <element maxOccurs="unbounded" name="vegetable" type="tns:vegetable"/>
         </sequence>
         <attribute use="required" name="name" type="string"/>
-    </complexType>
-
-    <complexType name="ingredient">
-        <sequence>
-            <element name="vegetable" type="tns:vegetable"/>
-            <element name="portion" type="integer"/>
-        </sequence>
     </complexType>
 
     <simpleType name="vegetable">

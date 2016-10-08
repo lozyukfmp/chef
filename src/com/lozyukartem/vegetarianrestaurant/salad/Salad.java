@@ -2,23 +2,26 @@ package com.lozyukartem.vegetarianrestaurant.salad;
 
 import com.lozyukartem.vegetarianrestaurant.vegetable.Vegetable;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class Salad {
 
-    private Map<Vegetable, Integer> ingredients;
+    private List<Vegetable> ingredients;
     private String name;
 
     public Salad() {
-        ingredients = new HashMap<>();
+        ingredients = new ArrayList<>();
+
     }
 
-    public Map<Vegetable, Integer> getIngredients() {
+    public List<Vegetable> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Map<Vegetable, Integer> ingredients) {
+    public void setIngredients(List<Vegetable> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -30,7 +33,12 @@ public class Salad {
         this.name = name;
     }
 
-    public void addIngredient(Vegetable vegetable, Integer portion) {
-        ingredients.put(vegetable, portion);
+    public void addIngredient(Vegetable vegetable) {
+        ingredients.add(vegetable);
     }
+
+    public List<Vegetable> getVegetableList() {
+        return ingredients;
+    }
+
 }
