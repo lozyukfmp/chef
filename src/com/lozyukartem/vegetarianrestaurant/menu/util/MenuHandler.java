@@ -6,28 +6,24 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuHandler extends DefaultHandler {
 
-    private static final String MENU = "menu";
     private static final String SALAD = "salad";
-    private static final String INGREDIENT = "ingredient";
-    private static final String PORTION = "portion";
     private static final String VEGETABLE = "vegetable";
 
-    private Map<String, Salad> menu = null;
-    private int portion;
+    private List<Salad> menu = null;
     private String currentTag = null;
     private Salad salad = null;
     private Vegetable vegetable = null;
 
     public MenuHandler() {
-        menu = new HashMap<>();
+        menu = new ArrayList<>();
     }
 
-    public Map<String, Salad> getMenu() {
+    public List<Salad> getMenu() {
         return menu;
     }
 
@@ -47,10 +43,10 @@ public class MenuHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (localName) {
             case SALAD:
-                menu.put(salad.getName(), salad);
+                menu.add(salad);
                 break;
-            case INGREDIENT:
-                salad.addIngredient(vegetable, portion);
+            case VEGETABLE:
+                salad.addIngredient(vegetable);
                 break;
         }
     }
@@ -66,9 +62,6 @@ public class MenuHandler extends DefaultHandler {
         switch (currentTag) {
             case VEGETABLE:
                 vegetable = Vegetable.valueOf(value);
-                break;
-            case PORTION:
-                portion = Integer.parseInt(value);
                 break;
         }
     }
