@@ -15,11 +15,19 @@ public final class ConsoleProcessor {
 
     private static final String EXIT = "exit";
     private static final String SALAD_LIST_PATTERN = "salad list";
-    private static final String SHOW_SALAD_PATTERN = "show salad (\\w+) (-c|-p|-f|-ch)";
-    public static final String FIND_BY_INTERVAL_PATTERN = "find (-c|-p|-f|-ch)\\[(\\d+),(\\d+)\\]";
+    private static final String SHOW_SALAD_PATTERN = "select salad (\\w+) (-c|-p|-f|-ch)";
+    private static final String FIND_BY_INTERVAL_PATTERN = "find (-c|-p|-f|-ch)\\[(\\d+),(\\d+)\\]";
+    private static final String SALAD_NOT_FOUND = "Salad with such name not found.";
+    private static final String INCORRECT_COMMAND = "Incorrect command.\nType\nsalad list - to show salad list\n" +
+            "select salad [saladName] [-c|-f|-p|-ch] - to show salad sorted by selected mode\n" +
+            "find [-c|-f|-p|-ch][firstNum,secondNum] to show ingredients of salad sorted by selected mode\n";
+    private static final String CHOOSE_SALAD = "Choose salad from salad list";
 
-    private static BufferedReader reader;
-    private static PrintWriter writer;
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private Menu menu;
+    private Salad currentSalad;
+
 
     private ConsoleProcessor() {
         reader = new BufferedReader(new InputStreamReader(System.in));
@@ -41,38 +49,65 @@ public final class ConsoleProcessor {
         return instance;
     }
 
-    public void process(Menu menu) {
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public void process() {
         String value = "";
         writer.println(menu);
-        Salad salad = null;
-
-        Pattern findPattern = Pattern.compile(FIND_BY_INTERVAL_PATTERN);
 
         while (!EXIT.equals(value)) {
             try {
                 value = reader.readLine();
+
                 if (value.matches(SHOW_SALAD_PATTERN)) {
-                    String saladName = value.split(" ")[2];
-                    String sortMode = value.split(" ")[3];
-
-                    salad = MenuUtil.findSalad(menu, saladName);
-                    SaladUtil.sort(salad.getVegetableList(), sortMode);
-                    writer.println(salad);
-
+                    processShowSaladQuery(value);
                 } else if (value.matches(SALAD_LIST_PATTERN)) {
-                    writer.println(menu);
+                    processSaladListQuery();
                 } else if (value.matches(FIND_BY_INTERVAL_PATTERN)) {
-                    Matcher matcher = findPattern.matcher(value);
-                    if (matcher.find()) {
-                        String mode = matcher.group(1);
-                        double start = Double.parseDouble(matcher.group(2));
-                        double end = Double.parseDouble(matcher.group(3));
-
-                        writer.println(SaladUtil.find(salad, mode, start, end));
-                    }
+                    processFindQuery(value);
+                } else {
+                    writer.println(INCORRECT_COMMAND);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void processSaladListQuery() {
+        currentSalad = null;
+        writer.println(menu);
+    }
+
+    private void processShowSaladQuery(String value) {
+        String saladName = value.split(" ")[2];
+        String sortMode = value.split(" ")[3];
+
+        currentSalad = MenuUtil.findSalad(menu, saladName);
+        if (currentSalad == null) {
+            writer.println(SALAD_NOT_FOUND);
+        } else {
+            SaladUtil.sort(currentSalad.getVegetableList(), sortMode);
+            writer.println(currentSalad);
+        }
+    }
+
+    private void processFindQuery(String value) {
+
+        Pattern findPattern = Pattern.compile(FIND_BY_INTERVAL_PATTERN);
+
+        if (currentSalad == null) {
+            writer.println(CHOOSE_SALAD);
+        } else {
+            Matcher matcher = findPattern.matcher(value);
+            if (matcher.find()) {
+                String mode = matcher.group(1);
+                double start = Double.parseDouble(matcher.group(2));
+                double end = Double.parseDouble(matcher.group(3));
+
+                writer.println(SaladUtil.find(currentSalad, mode, start, end));
             }
         }
     }

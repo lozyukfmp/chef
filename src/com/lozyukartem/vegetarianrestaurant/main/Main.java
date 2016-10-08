@@ -7,7 +7,8 @@ public class Main {
     public static void main(String[] args) {
         Menu menu = Menu.getInstance();
         ConsoleProcessor consoleProcessor = ConsoleProcessor.getInstance();
+        consoleProcessor.setMenu(menu);
 
-        consoleProcessor.process(menu);
+        consoleProcessor.process();
     }
 }

@@ -8,7 +8,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public final class MenuUtil {
 
@@ -31,12 +30,11 @@ public final class MenuUtil {
         return menuHandler.getMenu();
     }
 
-    public static Salad findSalad(Menu menu, String saladName) throws NoSuchElementException{
+    public static Salad findSalad(Menu menu, String saladName) {
         return menu.getSalads()
                 .stream()
                 .filter(salad1 -> salad1.getName().equals(saladName))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
-
 }
